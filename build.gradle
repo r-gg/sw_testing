@@ -1,0 +1,47 @@
+plugins {
+	id 'java'
+}
+
+repositories {
+	jcenter()
+}
+
+group = 'at.ac.tuwien.inso.swtesten'
+version = '1.0.0-SNAPSHOT'
+description = 'lab'
+sourceCompatibility = '17'
+
+dependencies {
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	testImplementation  'io.cucumber:cucumber-java8:7.8.1'
+	testImplementation 'org.seleniumhq.selenium:selenium-java:4.5.3'
+	testImplementation 'org.seleniumhq.selenium:selenium-firefox-driver:4.5.3'
+	testImplementation 'io.cucumber:cucumber-java:7.8.1'
+	testImplementation 'io.cucumber:cucumber-junit:7.8.1'
+	testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.8.1'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
+	testImplementation 'org.junit.platform:junit-platform-launcher:1.9.1'
+	testImplementation 'org.junit.platform:junit-platform-suite:1.9.1'
+	testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.0'
+}
+
+test {
+	testLogging {
+		exceptionFormat = 'short'
+		events "SKIPPED", "FAILED"
+	}
+	afterSuite { desc, result ->
+		if (!desc.parent) {
+			println "\nTest result: ${result.resultType}"
+			println "Test summary: ${result.testCount} tests, " +
+					"${result.successfulTestCount} succeeded, " +
+					"${result.failedTestCount} failed, " +
+					"${result.skippedTestCount} skipped"
+		}
+	}
+}
+
+tasks.test {
+	useJUnitPlatform()
+}
