@@ -17,7 +17,9 @@ public class BugstoreStepDefinitions implements En {
 
 	private WebDriver driver;
 
-	private ScenarioContext scenarioContext;
+	private ScenarioContext newDataScenarioContext;
+
+	private ScenarioContext oldDataScenarioContext;
 
 	private GroupSelectionPage groupSelectionPage;
 
@@ -31,8 +33,12 @@ public class BugstoreStepDefinitions implements En {
 
 
 		Before(() -> {
+			newDataScenarioContext = new ScenarioContext();
+			oldDataScenarioContext = new ScenarioContext();
 			driver = SeleniumWebDriver.getDriver();
-			scenarioContext = new ScenarioContext();
+//			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15L));
+//			driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(15L));
+
 		});
 
 		AfterStep(scenario -> {
@@ -47,7 +53,9 @@ public class BugstoreStepDefinitions implements En {
 		Given("I login with valid credentials", () -> {
 			groupSelectionPage = PageFactory.initElements(driver, GroupSelectionPage.class);
 			groupSelectionPage.visit();
-			bugstoreHomePage = groupSelectionPage.selectGroupAndConfirm(15);
+			groupSelectionPage.selectGroup(15);
+			bugstoreHomePage = groupSelectionPage.submitGroupSelection();
+
 			loginPage = bugstoreHomePage.clickLogin();
 			loginPage.enterCredentials("user15.b@mail.com", "T2022-x274");
 			bugstoreHomePage = loginPage.successfulLogin();
@@ -55,30 +63,74 @@ public class BugstoreStepDefinitions implements En {
 
 		When("I navigate to my profile", () -> {
 			accountInfoPage = bugstoreHomePage.navigateToAccountInfo();
-			String url = driver.getCurrentUrl();
 		});
 
-		When("^I change my address to \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$",
+		When("I change my address to {string}, {string}, {string}, {string}",
 				(String street, String zip, String city, String country) -> {
+					accountInfoPage.fillContextWithCurrentAddressData(oldDataScenarioContext);
 					accountInfoPage.changeAddress(street, zip, city, country);
-					scenarioContext.setContext(Context.STREET, street);
-					scenarioContext.setContext(Context.ZIP, zip);
-					scenarioContext.setContext(Context.CITY, city);
-					scenarioContext.setContext(Context.COUNTRY, country);
+					newDataScenarioContext.setContext(Context.STREET, street);
+					newDataScenarioContext.setContext(Context.ZIP, zip);
+					newDataScenarioContext.setContext(Context.CITY, city);
+					newDataScenarioContext.setContext(Context.COUNTRY, country);
 				});
+
+		When("I change my name to {string} {string}",
+				(String firstname, String lastname) -> {
+					accountInfoPage.fillContextWithCurrentNameData(oldDataScenarioContext);
+					accountInfoPage.changeName(firstname, lastname);
+					newDataScenarioContext.setContext(Context.FIRST_NAME, firstname);
+					newDataScenarioContext.setContext(Context.LAST_NAME, lastname);
+				});
+
+		When("I change my date of birth to {string}", (String dateOfBirth) -> {
+			accountInfoPage.fillContextWithCurrentDateOfBirthData(oldDataScenarioContext);
+			accountInfoPage.enderBirthDate(dateOfBirth);
+			newDataScenarioContext.setContext(Context.DATE_OF_BIRTH,dateOfBirth);
+		});
+
 		When("I submit my changes", () -> {
 			accountInfoPage.submitChanges();
 		});
+
 
 		Then("A confirmation notification is shown", () -> {
 			accountInfoPage.assertConfirmationNotificationShown();
 		});
 		Then("I can see my new address on my profile", () -> {
 			accountInfoPage.assertAddressShown(
-					scenarioContext.getContext(Context.STREET),
-					scenarioContext.getContext(Context.ZIP),
-					scenarioContext.getContext(Context.CITY),
-					scenarioContext.getContext(Context.COUNTRY));
+					newDataScenarioContext.getContext(Context.STREET),
+					newDataScenarioContext.getContext(Context.ZIP),
+					newDataScenarioContext.getContext(Context.CITY),
+					newDataScenarioContext.getContext(Context.COUNTRY));
+
+			driver.get(driver.getCurrentUrl());
+			accountInfoPage.assertAddressShown(
+					newDataScenarioContext.getContext(Context.STREET),
+					newDataScenarioContext.getContext(Context.ZIP),
+					newDataScenarioContext.getContext(Context.CITY),
+					newDataScenarioContext.getContext(Context.COUNTRY));
+		});
+
+		Then("An error message is shown", () -> {
+			accountInfoPage.assertErrorMessageShown();
+		});
+
+		Then("My old data is unchanged", () -> {
+			driver.get(driver.getCurrentUrl());
+			accountInfoPage.assertNameDataShown(
+					oldDataScenarioContext.getContext(Context.FIRST_NAME),
+					oldDataScenarioContext.getContext(Context.LAST_NAME)
+			);
+
+			accountInfoPage.assertDateOfBirthShown(
+					oldDataScenarioContext.getContext(Context.DATE_OF_BIRTH)
+			);
+			accountInfoPage.assertAddressShown(
+					oldDataScenarioContext.getContext(Context.STREET),
+					oldDataScenarioContext.getContext(Context.ZIP),
+					oldDataScenarioContext.getContext(Context.CITY),
+					oldDataScenarioContext.getContext(Context.COUNTRY));
 		});
 
 

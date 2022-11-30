@@ -13,7 +13,7 @@ public class GroupSelectionPage extends PageObject {
 	@FindBy(name = "group")
 	private WebElement groupSelectorField;
 
-	@FindBy(xpath = "//input[@value='Submit']")
+	@FindBy(css = "input[value='Submit']")
 	private WebElement submitButton;
 
 	public GroupSelectionPage(WebDriver driver) {
@@ -24,11 +24,14 @@ public class GroupSelectionPage extends PageObject {
 		driver.get("https://peso.inso.tuwien.ac.at/st/v1/selectGroup");
 	}
 
-	public BugstoreHomePage selectGroupAndConfirm(int groupNr){
+	public void selectGroup(int groupNr){
 		// Select and submit
 		Select groupSelector = new Select(groupSelectorField);
 		String groupNumber = (groupNr >= 10)? ""+groupNr : "0" + groupNr;
 		groupSelector.selectByValue("grp"+ groupNumber);
+	}
+
+	public BugstoreHomePage submitGroupSelection(){
 		submitButton.click();
 		return initPage(BugstoreHomePage.class);
 	}

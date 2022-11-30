@@ -1,13 +1,13 @@
 package at.ac.tuwien.inso.swtesten.lab.pages;
 
+import at.ac.tuwien.inso.swtesten.lab.context.Context;
+import at.ac.tuwien.inso.swtesten.lab.context.ScenarioContext;
 import at.ac.tuwien.inso.swtesten.util.PageObject;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-
-import org.junit.jupiter.api.Assertions.*;
 
 public class AccountInfoPage extends PageObject {
 
@@ -38,6 +38,9 @@ public class AccountInfoPage extends PageObject {
 	@FindBy(xpath = "//div[@class='callout success autoclose']")
 	private WebElement confirmationMessage;
 
+	@FindBy(xpath = "//div[@class='alert callout']")
+	private WebElement errorMessage;
+
 	public AccountInfoPage(WebDriver driver) {
 		super(driver);
 	}
@@ -50,6 +53,11 @@ public class AccountInfoPage extends PageObject {
 	public void enterLastName(String lastName){
 		lastNameInputField.clear();
 		lastNameInputField.sendKeys(lastName);
+	}
+
+	public void enderBirthDate(String dateOfBirth){
+		dateOfBirthPicker.clear();
+		dateOfBirthPicker.sendKeys(dateOfBirth);
 	}
 
 	public void enterStreet(String street){
@@ -83,6 +91,11 @@ public class AccountInfoPage extends PageObject {
 		this.selectCountry(country);
 	}
 
+	public void changeName(String firstname, String lastname){
+		this.enterFirstName(firstname);
+		this.enterLastName(lastname);
+	}
+
 	public void assertConfirmationNotificationShown(){
 		Assertions.assertTrue(confirmationMessage.isDisplayed());
 	}
@@ -95,6 +108,38 @@ public class AccountInfoPage extends PageObject {
 		Select countrySelector = new Select(countrySelectorField);
 		WebElement selectedCountry = countrySelector.getFirstSelectedOption();
 		Assertions.assertEquals(country.toUpperCase(),selectedCountry.getAttribute("value"));
+	}
+
+	public void assertNameDataShown(String firstname, String lastname){
+		Assertions.assertEquals(firstname,firstNameInputField.getAttribute("value"));
+		Assertions.assertEquals(lastname,lastNameInputField.getAttribute("value"));
+	}
+
+	public void assertDateOfBirthShown(String dateOfBirth){
+		Assertions.assertEquals(dateOfBirth,dateOfBirthPicker.getAttribute("value"));
+	}
+
+	public void assertErrorMessageShown(){
+		Assertions.assertTrue(errorMessage.isDisplayed());
+	}
+
+	public void fillContextWithCurrentAddressData(ScenarioContext scenarioContext){
+		scenarioContext.setContext(Context.STREET, streetInputField.getAttribute("value"));
+		scenarioContext.setContext(Context.ZIP, zipInputField.getAttribute("value"));
+		scenarioContext.setContext(Context.CITY, cityInputField.getAttribute("value"));
+		Select countrySelector = new Select(countrySelectorField);
+		WebElement selectedCountry = countrySelector.getFirstSelectedOption();
+		scenarioContext.setContext(Context.COUNTRY, selectedCountry.getAttribute("value"));
+	}
+
+	public void fillContextWithCurrentDateOfBirthData(ScenarioContext scenarioContext){
+		scenarioContext.setContext(Context.DATE_OF_BIRTH, dateOfBirthPicker.getAttribute("value"));
+
+	}
+
+	public void fillContextWithCurrentNameData(ScenarioContext scenarioContext){
+		scenarioContext.setContext(Context.FIRST_NAME, firstNameInputField.getAttribute("value"));
+		scenarioContext.setContext(Context.LAST_NAME, lastNameInputField.getAttribute("value"));
 	}
 
 
