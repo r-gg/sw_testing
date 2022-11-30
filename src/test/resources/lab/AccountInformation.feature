@@ -6,7 +6,9 @@ Feature: Edit account information details
     Given I login with valid credentials
     When I navigate to my profile
 	And I change my address to "<street>", "<zip>", "<city>", "<country>"
-	Then I can see my new address on my profile
+	And I submit my changes
+	Then A confirmation notification is shown
+	And I can see my new address on my profile
 
     Examples:
       | street            | zip  | city   | country |
