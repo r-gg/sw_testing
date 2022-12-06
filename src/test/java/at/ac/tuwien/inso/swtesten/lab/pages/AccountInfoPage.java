@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+
 public class AccountInfoPage extends PageObject {
 
 	@FindBy(id = "firstname")
@@ -38,8 +40,10 @@ public class AccountInfoPage extends PageObject {
 	@FindBy(xpath = "//div[@class='callout success autoclose']")
 	private WebElement confirmationMessage;
 
-	@FindBy(xpath = "//div[@class='alert callout']")
-	private WebElement errorMessage;
+	@FindBy(xpath = "//div[contains(@class,'alert')]")
+	private List<WebElement> errorMessage;
+
+
 
 	public AccountInfoPage(WebDriver driver) {
 		super(driver);
@@ -120,7 +124,7 @@ public class AccountInfoPage extends PageObject {
 	}
 
 	public void assertErrorMessageShown(){
-		Assertions.assertTrue(errorMessage.isDisplayed());
+		Assertions.assertTrue(errorMessage.stream().anyMatch(WebElement::isDisplayed));
 	}
 
 	public void fillContextWithCurrentAddressData(ScenarioContext scenarioContext){

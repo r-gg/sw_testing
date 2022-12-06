@@ -13,6 +13,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.Calendar;
+
 public class BugstoreStepDefinitions implements En {
 
 	private WebDriver driver;
@@ -112,6 +114,13 @@ public class BugstoreStepDefinitions implements En {
 					newDataScenarioContext.getContext(Context.COUNTRY));
 		});
 
+		Then("I can see my new birth date on my profile", () -> {
+			accountInfoPage.assertDateOfBirthShown(newDataScenarioContext.getContext(Context.DATE_OF_BIRTH));
+
+			driver.get(driver.getCurrentUrl());
+			accountInfoPage.assertDateOfBirthShown(newDataScenarioContext.getContext(Context.DATE_OF_BIRTH));
+		});
+
 		Then("An error message is shown", () -> {
 			accountInfoPage.assertErrorMessageShown();
 		});
@@ -131,6 +140,45 @@ public class BugstoreStepDefinitions implements En {
 					oldDataScenarioContext.getContext(Context.ZIP),
 					oldDataScenarioContext.getContext(Context.CITY),
 					oldDataScenarioContext.getContext(Context.COUNTRY));
+		});
+		Given("I set my birth date to {int} days before the date that was 18 years ago", (Integer daysBefore) -> {
+			Calendar date = Calendar.getInstance();
+			date.add(Calendar.YEAR, -18); // 18 years ago
+			date.add(Calendar.DATE, -daysBefore); // daysBefore days before
+
+			int dateInt = date.get(Calendar.DATE);
+			int monthInt = date.get(Calendar.MONTH) + 1;
+			String dateStr = (dateInt < 10)? "0" + dateInt : "" + dateInt;
+			String monthStr = (monthInt < 10)? "0" + monthInt : "" + monthInt;
+			String dateString = monthStr + "/" + dateStr + "/" + date.get(Calendar.YEAR);
+
+			accountInfoPage.fillContextWithCurrentDateOfBirthData(oldDataScenarioContext);
+			accountInfoPage.enderBirthDate(dateString);
+			newDataScenarioContext.setContext(Context.DATE_OF_BIRTH,dateString);
+
+		});
+
+		Given("I set my birth date to {int} days after the date that was 18 years ago", (Integer daysAfter) -> {
+			Calendar date = Calendar.getInstance();
+			date.add(Calendar.YEAR, -18); // 18 years ago
+			date.add(Calendar.DATE, daysAfter); // daysAfter days after
+
+			int dateInt = date.get(Calendar.DATE);
+			int monthInt = date.get(Calendar.MONTH) + 1;
+			String dateStr = (dateInt < 10)? "0" + dateInt : "" + dateInt;
+			String monthStr = (monthInt < 10)? "0" + monthInt : "" + monthInt;
+			String dateString = monthStr + "/" + dateStr + "/" + date.get(Calendar.YEAR);
+
+			accountInfoPage.fillContextWithCurrentDateOfBirthData(oldDataScenarioContext);
+			accountInfoPage.enderBirthDate(dateString);
+			newDataScenarioContext.setContext(Context.DATE_OF_BIRTH,dateString);
+
+		});
+		Then("My old date of birth is unchanged", () -> {
+			driver.get(driver.getCurrentUrl());
+			accountInfoPage.assertDateOfBirthShown(
+					oldDataScenarioContext.getContext(Context.DATE_OF_BIRTH)
+			);
 		});
 
 
