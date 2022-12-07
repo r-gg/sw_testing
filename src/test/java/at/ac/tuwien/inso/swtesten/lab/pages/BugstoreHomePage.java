@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 
 public class BugstoreHomePage extends PageObject {
 
-
 	@FindBy(id = "loginButton")
 	private WebElement loginButton;
 
@@ -19,6 +18,8 @@ public class BugstoreHomePage extends PageObject {
 	@FindBy(xpath = "//a[contains(text(),'Account')]")
 	private WebElement settingsAccountOption;
 
+	@FindBy(xpath = "//a[contains(text(),'Payment Method')]")
+	private WebElement settingsPaymentMethodOption;
 
 	public BugstoreHomePage(WebDriver driver) {
 		super(driver);
@@ -36,5 +37,10 @@ public class BugstoreHomePage extends PageObject {
 		return initPage(AccountInfoPage.class);
 	}
 
-
+	public PaymentMethodsPage navigateToPaymentMethods() {
+		Actions actions = new Actions(driver);
+		actions.moveToElement(settingsMenu).perform();
+		settingsPaymentMethodOption.click();
+		return initPage(PaymentMethodsPage.class);
+	}
 }

@@ -19,17 +19,12 @@ public class BugstoreStepDefinitions implements En {
 
 	private WebDriver driver;
 
-	private GroupSelectionPage groupSelectionPage;
-
-	private LoginPage loginPage;
-
 	public BugstoreStepDefinitions() {
 
 		Before(() -> {
 			driver = SeleniumWebDriver.getDriver();
 //			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15L));
 //			driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(15L));
-
 		});
 
 		AfterStep(scenario -> {

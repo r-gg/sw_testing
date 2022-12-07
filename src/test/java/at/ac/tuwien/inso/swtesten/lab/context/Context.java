@@ -7,5 +7,9 @@ public enum Context {
 	STREET,
 	ZIP,
 	CITY,
-	COUNTRY
+	COUNTRY,
+	CARD_NUMBER,
+	CARD_OWNER,
+	CARD_THRU_MONTH,
+	CARD_THRU_YEAR
 }

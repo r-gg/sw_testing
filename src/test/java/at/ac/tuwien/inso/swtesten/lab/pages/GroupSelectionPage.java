@@ -7,9 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 public class GroupSelectionPage extends PageObject {
-
-
-
 	@FindBy(name = "group")
 	private WebElement groupSelectorField;
 
