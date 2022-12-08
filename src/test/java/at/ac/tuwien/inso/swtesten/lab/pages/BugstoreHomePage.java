@@ -80,4 +80,12 @@ public class BugstoreHomePage extends PageObject {
 		String itemPath = "//a/div/img";
 		Assertions.assertEquals(Integer.parseInt(amount), driver.findElements(By.xpath(itemPath)).size());
 	}
+
+	public void assertItemDisplayed(String title, String description){
+		String itemTitlePath = "//a/h5[contains(text(),'" + title + "')]";
+		String itemDescriptionPath = "//a/h5[contains(text(),'" + title + "')]/../div[contains(text(), '" + description + "')]";
+
+		Assertions.assertNotNull(driver.findElement(By.xpath(itemTitlePath)));
+		Assertions.assertNotNull(driver.findElement(By.xpath(itemDescriptionPath)));
+	}
 }
