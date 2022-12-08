@@ -37,7 +37,7 @@ public class AccountInfoPage extends PageObject {
 	@FindBy(xpath = "//button[contains(.,'Submit Changes')]")
 	private WebElement submitChangesButton;
 
-	@FindBy(xpath = "//div[@class='callout success autoclose']")
+	@FindBy(xpath = "//div[contains(@class,'success')]")
 	private WebElement confirmationMessage;
 
 	@FindBy(xpath = "//div[contains(@class,'alert')]")
