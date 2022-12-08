@@ -1,4 +1,6 @@
-Feature: Items have correctly displayed
+Feature: Items are correctly displayed on homepage
+
+  As a customer I want to see all purchasable items on the homepage.
 
   Scenario Outline: Items are correctly displayed on homepage
 	Given I am on the homepage
