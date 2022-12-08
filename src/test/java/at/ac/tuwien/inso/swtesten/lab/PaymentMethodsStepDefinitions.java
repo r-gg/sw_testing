@@ -41,5 +41,17 @@ public class PaymentMethodsStepDefinitions extends BugstoreStepDefinitions {
 					context.getContext(Context.CARD_THRU_YEAR)
 			);
 		});
+
+		When("I delete credit card with the number {string}", (String account) -> {
+			paymentMethodsPage.deleteCreditCard(account);
+		});
+
+		Then("I cannot see anymore credit card {string} in my payment methods", (String account) -> {
+			paymentMethodsPage.assertCreditCardDeleted(account);
+		});
+
+		Then("I see validation error in the dialog", () -> {
+			paymentMethodsPage.assertValidationErrorOnCreate();
+		});
 	}
 }
