@@ -1,19 +1,12 @@
 package at.ac.tuwien.inso.swtesten.lab;
 
-import at.ac.tuwien.inso.swtesten.lab.context.Context;
-import at.ac.tuwien.inso.swtesten.lab.context.ScenarioContext;
-import at.ac.tuwien.inso.swtesten.lab.pages.AccountInfoPage;
 import at.ac.tuwien.inso.swtesten.lab.pages.BugstoreHomePage;
-import at.ac.tuwien.inso.swtesten.lab.pages.GroupSelectionPage;
-import at.ac.tuwien.inso.swtesten.lab.pages.LoginPage;
 import at.ac.tuwien.inso.swtesten.util.SeleniumWebDriver;
 import io.cucumber.java8.En;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
-
-import java.util.Calendar;
 
 public class BugstoreStepDefinitions implements En {
 

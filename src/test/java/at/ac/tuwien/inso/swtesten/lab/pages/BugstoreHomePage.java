@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.swtesten.lab.pages;
 
 import at.ac.tuwien.inso.swtesten.util.PageObject;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,6 +21,15 @@ public class BugstoreHomePage extends PageObject {
 
 	@FindBy(xpath = "//a[contains(text(),'Payment Method')]")
 	private WebElement settingsPaymentMethodOption;
+
+	@FindBy(xpath = "//a[contains(text(),'Shoppingcart')]")
+	private WebElement settingsShoppingCartOption;
+
+	@FindBy(id = "searchString")
+	private WebElement search;
+
+	@FindBy(id = "submitSearchButton")
+	private WebElement searchButton;
 
 	public BugstoreHomePage(WebDriver driver) {
 		super(driver);
@@ -42,5 +52,32 @@ public class BugstoreHomePage extends PageObject {
 		actions.moveToElement(settingsMenu).perform();
 		settingsPaymentMethodOption.click();
 		return initPage(PaymentMethodsPage.class);
+	}
+
+	public ShoppingCartPage navigateToShoppingCart() {
+		Actions actions = new Actions(driver);
+		actions.moveToElement(settingsMenu).perform();
+		settingsShoppingCartOption.click();
+		return initPage(ShoppingCartPage.class);
+	}
+
+	public ItemPage navigateToItem(String item){
+		String itemPath = "//img[@title='" + item + "']/../..";
+		WebElement e = driver.findElement(By.xpath(itemPath));
+		e.click();
+
+		return initPage(ItemPage.class);
+	}
+
+	public BugstoreHomePage searchForItem(String item){
+		search.sendKeys(item);
+		searchButton.click();
+
+		return this;
+	}
+
+	public void assertItemsFound(String amount){
+		String itemPath = "//a/div/img";
+		Assertions.assertEquals(Integer.parseInt(amount), driver.findElements(By.xpath(itemPath)).size());
 	}
 }
