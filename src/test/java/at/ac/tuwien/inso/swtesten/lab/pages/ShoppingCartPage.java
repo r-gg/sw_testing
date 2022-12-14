@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ShoppingCartPage extends PageObject {
 
-	@FindBy(xpath = "//button[span='Checkout']")
+	@FindBy(xpath = "//button[span='Purchase']")
 	private WebElement checkoutButton;
 
 	public ShoppingCartPage(WebDriver driver) {

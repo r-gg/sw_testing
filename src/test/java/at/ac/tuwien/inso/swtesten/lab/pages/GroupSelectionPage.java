@@ -18,7 +18,7 @@ public class GroupSelectionPage extends PageObject {
 	}
 
 	public void visit() {
-		driver.get("https://peso.inso.tuwien.ac.at/st/v1/selectGroup");
+		driver.get("https://peso.inso.tuwien.ac.at/st/v2/selectGroup");
 	}
 
 	public void selectGroup(int groupNr){
