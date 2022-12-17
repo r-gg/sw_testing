@@ -17,6 +17,7 @@ Feature: Adding a new payment option
 	Given I login with valid credentials
 	When I navigate to my payment methods
 	And I delete credit card with the number "<account>"
+	And I confirm the deletion
 	Then I cannot see anymore credit card "<account>" in my payment methods
 
 	Examples:

@@ -34,6 +34,9 @@ public class PaymentMethodsPage extends PageObject {
 	@FindBy(xpath = "//ul[@class='accordion']")
 	private WebElement paymentMethodsList;
 
+	@FindBy(xpath = "//div[@class='reveal-overlay'][@style='display: block;']")
+	private WebElement visibleModal;
+
 	private Select cardMonthModalSelect;
 
 	private Select cardYearModalSelect;
@@ -90,6 +93,9 @@ public class PaymentMethodsPage extends PageObject {
 		WebElement lastAccountField = creditCardItem.findElement(
 				By.xpath(".//input[@name='account']"));
 
+		WebElement lastOwnerField = creditCardItem.findElement(
+				By.xpath(".//input[@name='owner']"));
+
 		Select lastMonthSelect = new Select(creditCardItem.findElement(
 				By.xpath(".//select[@name='month']")));
 
@@ -97,7 +103,7 @@ public class PaymentMethodsPage extends PageObject {
 				By.xpath(".//select[@name='year']")));
 
 		Assertions.assertEquals(account, lastAccountField.getAttribute("value"));
-		// NOTE: not check for owner as there is a bug, so test would fail
+		Assertions.assertEquals(owner, lastOwnerField.getAttribute("value"));
 		Assertions.assertEquals(Integer.valueOf(month).toString(), lastMonthSelect.getFirstSelectedOption().getAttribute("value"));
 		Assertions.assertEquals(year, lastYearSelect.getFirstSelectedOption().getAttribute("value"));
 	}
@@ -106,16 +112,16 @@ public class PaymentMethodsPage extends PageObject {
 		numberOfMethods = getNumberOfMethods();
 
 		WebElement listItem = getListItemByCreditCard(account);
-
 		if (listItem == null) {
 			return;
 		}
-
 		listItem.click();
 
 		WebElement deleteBtn = listItem.findElement(By.xpath(".//button[@class='button'][.//span[contains(text(), 'Delete')]]"));
 		deleteBtn.click();
+	}
 
+	public void confirmDeletion() {
 		WebElement modal = driver.findElement(By.xpath("//div[@role='dialog' and @aria-hidden='false']"));
 		WebElement modalDeleteBtn = modal.findElement(By.xpath(".//button[@class='button'][.//span[contains(text(), 'Delete')]]"));
 		modalDeleteBtn.click();

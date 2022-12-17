@@ -46,6 +46,10 @@ public class PaymentMethodsStepDefinitions extends BugstoreStepDefinitions {
 			paymentMethodsPage.deleteCreditCard(account);
 		});
 
+		When("I confirm the deletion", () -> {
+			paymentMethodsPage.confirmDeletion();
+		});
+
 		Then("I cannot see anymore credit card {string} in my payment methods", (String account) -> {
 			paymentMethodsPage.assertCreditCardDeleted(account);
 		});
