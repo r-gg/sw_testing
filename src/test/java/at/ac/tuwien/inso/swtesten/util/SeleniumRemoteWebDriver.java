@@ -19,28 +19,32 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class SeleniumRemoteWebDriver {
-	private static RemoteWebDriver webdriver = null;
+	private static ThreadLocal<RemoteWebDriver> webdriver = new ThreadLocal<>();
 	private static String defaultLocale = "en"; //use english as default
 
+	private static ConcurrentHashMap< String,WebDriver> drivers = new ConcurrentHashMap<String,WebDriver>();
+
 	public static RemoteWebDriver getRemoteDriver() throws MalformedURLException {
-		if (webdriver == null) {
+		System.out.println("My thread id: "+ Thread.currentThread().getId());
+		if (webdriver.get() == null) {
 
 			String hubUrl = "http://localhost:4444/wd/hub";
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setBrowserName(Browser.CHROME.browserName());
-			webdriver = new RemoteWebDriver(new URL(hubUrl), capabilities);
-
-			// Be aware that we recommend to use Chrome.
-//			webdriver = createChromeWebDriver();
-//			webdriver = createFireFoxWebDriver();
+			webdriver.set(new RemoteWebDriver(new URL(hubUrl), capabilities));
 		}
-
-		webdriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-		webdriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-		webdriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(50));
-		return webdriver;
+		webdriver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		webdriver.get().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5));
+		webdriver.get().manage().timeouts().scriptTimeout(Duration.ofSeconds(5));
+		System.out.println("get Remote driver with sessionid:" + webdriver.get().getSessionId().toString());
+		return webdriver.get();
 	}
 
 	private static RemoteWebDriver createChromeWebDriver() {
@@ -66,14 +70,14 @@ public class SeleniumRemoteWebDriver {
 		return new FirefoxDriver(options);
 	}
 
-	public static void closeDriver() {
-		if(webdriver == null) {
+	public static void closeDriver(WebDriver driver) {
+		if(webdriver.get() == null) {
 			return;
 		}
 
 		try {
-			webdriver.quit();
-			webdriver = null;
+			webdriver.get().quit();
+			webdriver.set(null);
 		} catch (UnreachableBrowserException ignored) {
 		}
 	}
@@ -82,8 +86,4 @@ public class SeleniumRemoteWebDriver {
 		SeleniumRemoteWebDriver.defaultLocale = defaultLocale;
 	}
 
-	public static void waitUntil(ExpectedCondition<?> condition) {
-		WebDriverWait wait = new WebDriverWait(webdriver, Duration.ofSeconds(15), Duration.ofMillis(500));
-		wait.until(condition);
-	}
 }

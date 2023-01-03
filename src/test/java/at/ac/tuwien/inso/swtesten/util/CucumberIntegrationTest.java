@@ -7,9 +7,14 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PUBLISH_QUIET_P
 import static io.cucumber.junit.platform.engine.Constants.PARALLEL_EXECUTION_ENABLED_PROPERTY_NAME;
 
 import io.cucumber.junit.CucumberOptions;
+import net.bytebuddy.asm.Advice;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.Suite;
+import org.openqa.selenium.WebDriver;
 
 /**
  * Executes Cucumber .feature files as JUnit test.

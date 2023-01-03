@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.swtesten.lab;
 
 import at.ac.tuwien.inso.swtesten.lab.pages.BugstoreHomePage;
 import at.ac.tuwien.inso.swtesten.util.SeleniumRemoteWebDriver;
+import at.ac.tuwien.inso.swtesten.util.SeleniumWebDriver;
 import io.cucumber.java8.En;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -18,11 +19,8 @@ public class BugstoreStepDefinitions implements En {
 	public BugstoreStepDefinitions() {
 
 		Before(() -> {
-			String hubUrl = "http://localhost:4444/wd/hub";
-			DesiredCapabilities capabilities = new DesiredCapabilities();
-			capabilities.setBrowserName(Browser.CHROME.browserName());
-
 			driver = SeleniumRemoteWebDriver.getRemoteDriver();
+
 		});
 
 		AfterStep(scenario -> {
@@ -33,7 +31,9 @@ public class BugstoreStepDefinitions implements En {
 			}
 		});
 
-		After(SeleniumRemoteWebDriver::closeDriver);
+		After(scenario -> {
+			SeleniumRemoteWebDriver.closeDriver(driver);
+		});
 	}
 
 	public WebDriver getDriver() {
