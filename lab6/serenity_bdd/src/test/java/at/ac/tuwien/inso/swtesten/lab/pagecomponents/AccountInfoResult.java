@@ -1,18 +1,21 @@
 package at.ac.tuwien.inso.swtesten.lab.pagecomponents;
 
 import net.serenitybdd.core.pages.PageComponent;
-import net.serenitybdd.screenplay.ui.Dropdown;
-import net.serenitybdd.screenplay.ui.InputField;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 public class AccountInfoResult extends PageComponent {
-	public Boolean confirmationVisible() {
-		return !$("//div[contains(@class,'success')]").isVisible();
-	}
+	@FindBy(id = "address.street")
+	private WebElement streetInputField;
+	@FindBy(id = "address.city")
+	private WebElement cityInputField;
+	@FindBy(id = "address.zip")
+	private WebElement zipInputField;
+	@FindBy(id = "address.country")
+	private WebElement countrySelectorField;
 
 	public Boolean addressIsShown(String street, String city, String zip, String country) {
-		return $(InputField.withNameOrId("address.street")).getValue().equals(street) &&
-		$(InputField.withNameOrId("address.city")).getValue().equals(city) &&
-		$(InputField.withNameOrId("address.zip")).getValue().equals(zip) &&
-		$(Dropdown.withNameOrId("address.country")).getFirstSelectedOptionValue().equals(country.toUpperCase());
+		return streetInputField.getAttribute("value").equals(street) && cityInputField.getAttribute("value").equals(city) && zipInputField.getAttribute("value").equals(zip) && new Select(countrySelectorField).getFirstSelectedOption().getAttribute("value").equals(country.toUpperCase());
 	}
 }

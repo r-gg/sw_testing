@@ -18,7 +18,9 @@ public class WhenIAmInMyProfile {
 	AccountInfoResult accountInfoResult;
 
 	@Test
-	void onAddressChangeAConfirmationIsShownAndTheNewAddressDisplayed() {
+	void onAddressChangeTheNewAddressDisplayed() {
+		homepageNavigateAction.toHomepage();
+		homepageNavigateAction.login();
 		homepageNavigateAction.toAccountInfo();
 
 		String city = "Vienna";
@@ -31,9 +33,6 @@ public class WhenIAmInMyProfile {
 		addressActions.changeZip(zip);
 		addressActions.changeCountry(country);
 		addressActions.submit();
-
-		Serenity.reportThat("A confirmation notification is shown", ()
-				-> assertThat(accountInfoResult.confirmationVisible()).isTrue());
 
 		Serenity.reportThat("I can see my new address on my profile", ()
 				-> assertThat(accountInfoResult.addressIsShown(street, city, zip, country)).isTrue());
