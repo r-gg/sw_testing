@@ -12,10 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(SerenityJUnit5Extension.class)
-public class WhenSearchingForKeyword {
+public class WhenIAmOnTheHomepage {
 
 	HomepageNavigateActions homepageNavigateAction;
-	SearchActions search;
 	SearchResult searchResult;
 
 	@Test
@@ -24,22 +23,10 @@ public class WhenSearchingForKeyword {
 		String title = "Arizona Bound";
 		String description = "Arizona Bound is a lost 1927 American Western silent film directed by John Waters and starring Gary Cooper, Betty Jewel, and El Brendel.";
 
-		search.byKeyword(title);
-
 		Serenity.reportThat("The item title should be visible", ()
 				-> assertThat(searchResult.itemTitleVisible(title)).isTrue());
 
 		Serenity.reportThat("The item description should be visible", ()
 				-> assertThat(searchResult.itemDescriptionVisible(title, description)).isTrue());
-	}
-
-	@Test
-	void theItemShouldNotBeVisible() {
-		homepageNavigateAction.toHomepage();
-
-		search.byKeyword("Arizona Boundies");
-
-		Serenity.reportThat("The item title should be visible", ()
-				-> assertThat(searchResult.itemTitleVisible("Arizona Bound")).isFalse());
 	}
 }
