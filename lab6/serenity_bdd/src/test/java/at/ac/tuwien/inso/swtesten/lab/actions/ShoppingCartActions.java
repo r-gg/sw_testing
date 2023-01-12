@@ -8,7 +8,7 @@ public class ShoppingCartActions extends UIInteractions {
 	@FindBy(xpath = "//button[span='Checkout']")
 	private WebElement submit;
 
-	public void submitOrder(){
+	public void submitOrder() {
 		submit.click();
 	}
 }

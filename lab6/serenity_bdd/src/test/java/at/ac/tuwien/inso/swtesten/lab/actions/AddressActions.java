@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.swtesten.lab.actions;
 
 import net.serenitybdd.core.steps.UIInteractions;
-import net.serenitybdd.screenplay.ui.Button;
 import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

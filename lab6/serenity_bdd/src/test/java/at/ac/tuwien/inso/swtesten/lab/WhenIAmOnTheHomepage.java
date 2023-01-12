@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.swtesten.lab;
 
 import at.ac.tuwien.inso.swtesten.lab.actions.HomepageNavigateActions;
-import at.ac.tuwien.inso.swtesten.lab.actions.SearchActions;
 import at.ac.tuwien.inso.swtesten.lab.pagecomponents.SearchResult;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;

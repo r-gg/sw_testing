@@ -32,6 +32,6 @@ public class WhenIAmInMyPaymentMethods {
 		paymentMethodsActions.createCreditCard(cardNumber, owner, month, year);
 
 		Serenity.reportThat("I can see my new credit card in my payment methods", ()
-				-> assertThat(paymentMethodsResult.creditCardAdded(cardNumber, owner, month, year)).isTrue());
+				-> assertThat(paymentMethodsResult.creditCardAdded(cardNumber, month, year)).isTrue());
 	}
 }

@@ -9,8 +9,10 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.List;
 
 public class PaymentMethodsResult extends PageComponent {
-	public Boolean creditCardAdded(String cardNumber, String owner, String month, String year) {
+	public Boolean creditCardAdded(String cardNumber, String month, String year) {
 		WebElement creditCard = getCreditCard(cardNumber);
+		if (creditCard == null)
+			return false;
 
 		WebElement cardNumberInputField = creditCard.findElement(
 				By.xpath(".//input[@name='account']"));
