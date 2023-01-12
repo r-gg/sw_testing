@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.swtesten.lab.actions;
 
 import net.serenitybdd.core.steps.UIInteractions;
+import net.thucydides.core.annotations.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,14 +20,17 @@ public class PaymentMethodsActions extends UIInteractions {
 	@FindBy(xpath = "//div[@id='addCreditCard']//button//span[text()='Save']")
 	private WebElement save;
 
+	@Step("Create a new payment method")
 	public void newPaymentMethod() {
 		addPaymentMethod.click();
 	}
 
+	@Step("Create a new credit card")
 	public void newCreditCard() {
 		addCreditCard.click();
 	}
 
+	@Step("Fill credit card information")
 	public void createCreditCard(String cardNumber, String owner, String month, String year) {
 		cardNumberInputField.sendKeys(cardNumber);
 		ownerInputField.sendKeys(owner);
