@@ -1,6 +1,12 @@
 # Playwright
-Tests can run using command:
+
+Run:
+```
+npm install
+```
+
+Tests can be run using the command:
 ```
 npx playwright test --project=chromium
 ```
-The HTML report will be generated under `/playwright-report` directory
+The HTML report will be generated in the `/playwright-report` directory
